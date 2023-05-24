@@ -66,7 +66,10 @@ public class CoordsModule extends BaseModule {
    * @param client the Minecraft client
    */
   public void update(final MinecraftClient client) {
+    final Double diffX = Math.abs(cameraEntity.getBlockPos().getX() - blockPos.getX());
 
+    final Double diffY = Math.abs(cameraEntity.getBlockPos().getY() - cameraY);
+    
     final Entity cameraEntity = client.getCameraEntity();
 
     final Text xyz =
@@ -74,6 +77,13 @@ public class CoordsModule extends BaseModule {
     this.colorZ));
 
     if (cameraEntity != null) {
+      final Double diffX = Math.abs(cameraEntity.getBlockPos().getX() - blockPos.getX());
+
+      final Double diffY = Math.abs(cameraEntity.getBlockPos().getY() - blockPos.getY());
+      
+      final Double diff = Math.sqrt(diffX*diffX+diffY*diffY)
+      final Double speed = diff * 20
+      
       final String cameraX = String.format("%.3f", cameraEntity.getX());
       final String cameraY = String.format("%.5f", cameraEntity.getY());
       final String cameraZ = String.format("%.3f", cameraEntity.getZ());
@@ -92,6 +102,8 @@ public class CoordsModule extends BaseModule {
       // Chunk coords
       lines.get(3).value(Arrays.asList(Utils.styledText(blockPos.getX() >> 4, this.colorX),
       Utils.styledText(blockPos.getY() >> 4, this.colorY), Utils.styledText(blockPos.getZ() >> 4, this.colorZ)));
+      
+      lines.get(4).value(speed)
     }
   }
 }
