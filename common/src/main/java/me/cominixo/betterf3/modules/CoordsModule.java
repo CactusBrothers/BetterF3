@@ -55,7 +55,8 @@ public class CoordsModule extends BaseModule {
     lines.add(new DebugLine("player_coords", "format.betterf3.coords", true));
     lines.add(new DebugLine("block_coords", "format.betterf3.coords", true));
     lines.add(new DebugLine("chunk_relative_coords", "format.betterf3.coords", true));
-    lines.add(new DebugLine("chunk_coords", "format.betterf3.coords", true));
+    lines.add(new DebugLine("chunk_coords", "format.betterf3.coords", true));\
+    lines.add(new DebugLine("speed", "format.betterf3.coords", true));
 
     lines.get(2).inReducedDebug = true;
   }
@@ -66,7 +67,7 @@ public class CoordsModule extends BaseModule {
    * @param client the Minecraft client
    */
   public void update(final MinecraftClient client) {
-
+    
     final Entity cameraEntity = client.getCameraEntity();
 
     final Text xyz =
@@ -74,6 +75,12 @@ public class CoordsModule extends BaseModule {
     this.colorZ));
 
     if (cameraEntity != null) {
+      final Double diffX = Math.abs(blockPos.getX() - cameraEntity.getBlockPos().getX())
+      final Double diffY = Math.abs(blockPos.getY() - cameraEntity.getBlockPos().getY())
+      
+      final Double diff = Math.sqrt(diffX*diffX + diffY*diffY)
+      final double speed = diff*20
+        
       final String cameraX = String.format("%.3f", cameraEntity.getX());
       final String cameraY = String.format("%.5f", cameraEntity.getY());
       final String cameraZ = String.format("%.3f", cameraEntity.getZ());
@@ -92,6 +99,8 @@ public class CoordsModule extends BaseModule {
       // Chunk coords
       lines.get(3).value(Arrays.asList(Utils.styledText(blockPos.getX() >> 4, this.colorX),
       Utils.styledText(blockPos.getY() >> 4, this.colorY), Utils.styledText(blockPos.getZ() >> 4, this.colorZ)));
+      
+      lines.get(4).value(speed)
     }
   }
 }
